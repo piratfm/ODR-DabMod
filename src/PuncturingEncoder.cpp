@@ -39,7 +39,7 @@ PuncturingEncoder::PuncturingEncoder() :
     d_num_cu(0),
     d_in_block_size(0),
     d_out_block_size(0),
-    d_tail_rule()
+    d_tail_rule(0)
 {
     PDEBUG("PuncturingEncoder() @ %p\n", this);
 }
@@ -50,7 +50,7 @@ PuncturingEncoder::PuncturingEncoder(
     d_num_cu(num_cu),
     d_in_block_size(0),
     d_out_block_size(0),
-    d_tail_rule()
+    d_tail_rule(0)
 {
     PDEBUG("PuncturingEncoder(%zu) @ %p\n", num_cu, this);
 }
@@ -94,7 +94,7 @@ void PuncturingEncoder::append_rule(const PuncturingRule& rule)
 void PuncturingEncoder::append_tail_rule(const PuncturingRule& rule)
 {
     PDEBUG("append_tail_rule(rule(%zu, 0x%x))\n", rule.length(), rule.pattern());
-    d_tail_rule = rule;
+    d_tail_rule = new PuncturingRule(rule);
 
     adjust_item_size();
 }

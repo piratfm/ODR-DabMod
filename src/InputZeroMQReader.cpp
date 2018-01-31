@@ -36,7 +36,7 @@
 #include <cstdio>
 #include <stdint.h>
 #include "zmq.hpp"
-#include <boost/thread/thread.hpp>
+#include <thread>
 #include "porting.h"
 #include "InputReader.h"
 #include "PcDebug.h"
@@ -89,7 +89,7 @@ int InputZeroMQReader::Open(const string& uri, size_t max_queued_frames)
 
     m_max_queued_frames = max_queued_frames;
 
-    m_recv_thread = boost::thread(&InputZeroMQReader::RecvProcess, this);
+    m_recv_thread = std::thread(&InputZeroMQReader::RecvProcess, this);
 
     return 0;
 }

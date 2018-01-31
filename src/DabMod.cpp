@@ -51,11 +51,13 @@
 #include <memory>
 #include <complex>
 #include <string>
+#include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdexcept>
+#include <iomanip>
 #include <signal.h>
 
 #if HAVE_NETINET_IN_H

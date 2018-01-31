@@ -62,6 +62,10 @@ AC_ARG_ENABLE([edi],
         [AS_HELP_STRING([--enable-edi], [Enable EDI input])],
         [], [enable_edi=no])
 
+AC_ARG_ENABLE([telnet],
+        [AS_HELP_STRING([--enable-telnet], [Enable Telnet control])],
+        [], [enable_telnet=no])
+
 AC_ARG_ENABLE([native],
         [AS_HELP_STRING([--disable-native], [Do not compile with -march=native])],
         [], [enable_native=yes])
@@ -132,11 +136,10 @@ AS_IF([test "x$enable_soapysdr" = "xyes"],
 AS_IF([test "x$enable_edi" = "xyes"],
       [AC_DEFINE(HAVE_EDI, [1], [Define if EDI input is enabled]) ])
 
-AM_CONDITIONAL([COMPILE_EDI], [test "x$enable_edi" = "xyes"])
+AS_IF([test "x$enable_telnet" = "xyes"],
+      [AC_DEFINE(HAVE_TELNET_CONTROL, [1], [Define if Telnet Control is enabled]) ])
 
-AX_BOOST_BASE([1.54.0], [], AC_MSG_ERROR([BOOST 1.54 or later is required]))
-AX_BOOST_SYSTEM
-AX_BOOST_THREAD
+AM_CONDITIONAL([COMPILE_EDI], [test "x$enable_edi" = "xyes"])
 
 # Checks for header files.
 AC_HEADER_STDC

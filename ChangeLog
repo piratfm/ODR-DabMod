@@ -22,6 +22,7 @@ ODR-DabMod in this repository
 		Make EDI input optional (it's not well tested, unfinished and slows
 		compile time)
 		Improve portability for non-Linux POSIX systems.
+		Disable boost, use C++11 instead.
 
 2017-11-18: Matthias P. Braendli <matthias@mpb.li>
 	(v1.1.0):

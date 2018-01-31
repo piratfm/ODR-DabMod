@@ -5,7 +5,7 @@
    Copyright (C) 2013, 2014
    Matthias P. Braendli, matthias.braendli@mpb.li
 
-   An implementation for a threadsafe queue using boost thread library
+   An implementation for a threadsafe queue using std thread library
 
    When creating a ThreadsafeQueue, one can specify the minimal number
    of elements it must contain before it is possible to take one
@@ -31,7 +31,8 @@
 #ifndef THREADSAFE_QUEUE_H
 #define THREADSAFE_QUEUE_H
 
-#include <boost/thread.hpp>
+#include <thread>
+#include <condition_variable>
 #include <queue>
 
 /* This queue is meant to be used by two threads. One producer
@@ -53,7 +54,7 @@ public:
      */
     size_t push(T const& val)
     {
-        boost::mutex::scoped_lock lock(the_mutex);
+        std::unique_lock<std::mutex> lock(the_mutex);
         the_queue.push(val);
         size_t queue_size = the_queue.size();
         lock.unlock();
@@ -72,7 +73,7 @@ public:
      */
     size_t push_wait_if_full(T const& val, size_t threshold)
     {
-        boost::mutex::scoped_lock lock(the_mutex);
+        std::unique_lock<std::mutex> lock(the_mutex);
         while (the_queue.size() >= threshold) {
             the_tx_notification.wait(lock);
         }
@@ -93,19 +94,19 @@ public:
 
     bool empty() const
     {
-        boost::mutex::scoped_lock lock(the_mutex);
+        std::unique_lock<std::mutex> lock(the_mutex);
         return the_queue.empty();
     }
 
     size_t size() const
     {
-        boost::mutex::scoped_lock lock(the_mutex);
+        std::unique_lock<std::mutex> lock(the_mutex);
         return the_queue.size();
     }
 
     bool try_pop(T& popped_value)
     {
-        boost::mutex::scoped_lock lock(the_mutex);
+        std::unique_lock<std::mutex> lock(the_mutex);
         if (the_queue.empty()) {
             return false;
         }
@@ -121,7 +122,7 @@ public:
 
     void wait_and_pop(T& popped_value, size_t prebuffering = 1)
     {
-        boost::mutex::scoped_lock lock(the_mutex);
+        std::unique_lock<std::mutex> lock(the_mutex);
         while (the_queue.size() < prebuffering) {
             the_rx_notification.wait(lock);
         }
@@ -135,9 +136,9 @@ public:
 
 private:
     std::queue<T> the_queue;
-    mutable boost::mutex the_mutex;
-    boost::condition_variable the_rx_notification;
-    boost::condition_variable the_tx_notification;
+    mutable std::mutex the_mutex;
+    std::condition_variable the_rx_notification;
+    std::condition_variable the_tx_notification;
 };
 
 #endif

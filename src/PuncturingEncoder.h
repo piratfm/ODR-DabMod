@@ -37,7 +37,6 @@
 #include <vector>
 #include <string>
 #include <sys/types.h>
-#include <boost/optional.hpp>
 
 class PuncturingEncoder : public ModCodec
 {
@@ -68,7 +67,7 @@ private:
     size_t d_in_block_size;
     size_t d_out_block_size;
     std::vector<PuncturingRule> d_rules;
-    boost::optional<PuncturingRule> d_tail_rule;
+    PuncturingRule *d_tail_rule;
 
     void adjust_item_size();
 };

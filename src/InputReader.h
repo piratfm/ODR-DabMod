@@ -183,7 +183,7 @@ class InputZeroMQReader : public InputReader
         void RecvProcess(void);
 
         zmq::context_t m_zmqcontext; // is thread-safe
-        boost::thread m_recv_thread;
+        std::thread m_recv_thread;
 
         /* We must be careful to keep frame phase consistent. If we
          * drop a single ETI frame, we will break the transmission

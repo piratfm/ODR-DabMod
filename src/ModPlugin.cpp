@@ -28,7 +28,7 @@
 #include "PcDebug.h"
 #include "Utils.h"
 #include <stdexcept>
-#include <string>
+#include <string.h>
 
 #define MODASSERT(cond) \
     if (not (cond)) { \
